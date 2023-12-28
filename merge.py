@@ -5,7 +5,7 @@ from tqdm import tqdm
 import shutil
 
 def merge_segments(mapping_path, folder_name, max_length):
-    merge_path = f"merge/{folder_name}"
+    merge_path = f"6.merge/{folder_name}"
     if not os.path.exists(merge_path):
         os.makedirs(merge_path)
     else:
@@ -64,8 +64,9 @@ def merge_segments(mapping_path, folder_name, max_length):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Merge short segments from mapping.list")
     parser.add_argument("--max", type=int, default=20, help="Maximum text length for a segment")
+    parser.add_argument("--target_dir", default="output", help="Path to dir to filter")
     args = parser.parse_args()
 
-    for root, dirs, files in os.walk('output'):
+    for root, dirs, files in os.walk(args.target_dir):
         for folder in tqdm(dirs, desc="Merging folders", unit="folder"):
-            merge_segments(f"./output/{folder}/clean_mapping.list", folder, args.max)
+            merge_segments(f"./{args.target_dir}/{folder}/clean_mapping.list", folder, args.max)
